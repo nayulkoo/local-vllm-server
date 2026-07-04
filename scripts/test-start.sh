@@ -7,11 +7,15 @@ cd "$ROOT_DIR"
 grep -Fxq "GPU_MEMORY_UTILIZATION=0.50" .env.example
 grep -Fq -- "--use-env-gpu-memory-utilization" scripts/start.sh
 grep -Fq -- '--gpu-memory-utilization "$EFFECTIVE_GPU_MEMORY_UTILIZATION"' scripts/start.sh
+grep -Fq -- '--reasoning-parser "$REASONING_PARSER"' scripts/start.sh
+grep -Fq -- '--default-chat-template-kwargs "$DEFAULT_CHAT_TEMPLATE_KWARGS"' scripts/start.sh
 grep -Fq "GPU memory utilization:" scripts/start.sh
 grep -Fq "Darwin)" scripts/start.sh
 grep -Fq "Linux)" scripts/start.sh
 grep -Fq "/proc/meminfo" scripts/start.sh
 grep -Fxq "VLLM_BOOTSTRAP_MEMORY_RESERVE_GB=2" .env.example
+grep -Fxq "REASONING_PARSER=qwen3" .env.example
+grep -Fxq "DEFAULT_CHAT_TEMPLATE_KWARGS='{\"enable_thinking\": false}'" .env.example
 
 bash -n scripts/start.sh
 
@@ -45,6 +49,8 @@ ENV
   sed -n '3p' logs/test.log | grep -Fq "Bootstrap memory reserve: 2.0 GB"
   sed -n '4p' logs/test.log | grep -Fq "GPU memory utilization: 0.42 (42%)"
   grep -Fq -- "--gpu-memory-utilization 0.42" logs/test.log
+  grep -Fq -- "--reasoning-parser qwen3" logs/test.log
+  grep -Fq -- "--default-chat-template-kwargs {\"enable_thinking\": false}" logs/test.log
 )
 
 mkdir -p "$TMP_DIR/linux/bin"

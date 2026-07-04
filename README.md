@@ -47,6 +47,8 @@ PORT=8000
 MAX_MODEL_LEN=32768
 GPU_MEMORY_UTILIZATION=0.50
 VLLM_BOOTSTRAP_MEMORY_RESERVE_GB=2
+REASONING_PARSER=qwen3
+DEFAULT_CHAT_TEMPLATE_KWARGS='{"enable_thinking": false}'
 VLLM_BIN=.venv-vllm-metal/bin/vllm
 HF_HOME=.cache/huggingface
 UV_CACHE_DIR=.cache/uv
@@ -70,7 +72,11 @@ Start vLLM:
 ./scripts/start.sh
 ```
 
-`start.sh` prints total and available memory, recommends a `--gpu-memory-utilization` value after keeping `VLLM_BOOTSTRAP_MEMORY_RESERVE_GB` free, and asks before using it. To skip the prompt and use `GPU_MEMORY_UTILIZATION` from `.env`, run:
+`start.sh` prints total and available memory, then recommends a `--gpu-memory-utilization` value after keeping `VLLM_BOOTSTRAP_MEMORY_RESERVE_GB` free.
+
+It also passes `REASONING_PARSER` to `--reasoning-parser` and `DEFAULT_CHAT_TEMPLATE_KWARGS` to `--default-chat-template-kwargs`.
+
+To skip the prompt and use `GPU_MEMORY_UTILIZATION` from `.env`, run:
 
 ```bash
 ./scripts/start.sh --use-env-gpu-memory-utilization

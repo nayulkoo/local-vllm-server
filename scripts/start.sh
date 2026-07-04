@@ -197,6 +197,8 @@ nohup "$VLLM_BIN" serve "$MODEL_ID" \
   --served-model-name "$SERVED_MODEL_NAME" \
   --max-model-len "$MAX_MODEL_LEN" \
   --gpu-memory-utilization "$EFFECTIVE_GPU_MEMORY_UTILIZATION" \
+  --reasoning-parser "$REASONING_PARSER" \
+  --default-chat-template-kwargs "$DEFAULT_CHAT_TEMPLATE_KWARGS" \
   >>"$LOG_FILE" 2>&1 &
 
 echo "$!" > "$PID_FILE"

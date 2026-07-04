@@ -47,6 +47,8 @@ PORT=8000
 MAX_MODEL_LEN=32768
 GPU_MEMORY_UTILIZATION=0.50
 VLLM_BOOTSTRAP_MEMORY_RESERVE_GB=2
+REASONING_PARSER=qwen3
+DEFAULT_CHAT_TEMPLATE_KWARGS='{"enable_thinking": false}'
 VLLM_BIN=.venv-vllm-metal/bin/vllm
 HF_HOME=.cache/huggingface
 UV_CACHE_DIR=.cache/uv
@@ -70,7 +72,11 @@ vLLM을 시작합니다.
 ./scripts/start.sh
 ```
 
-`start.sh`는 전체/사용 가능 메모리를 출력하고, `VLLM_BOOTSTRAP_MEMORY_RESERVE_GB`만큼 남긴 뒤 사용할 `--gpu-memory-utilization` 값을 추천하고 확인을 받습니다. 확인 없이 `.env`의 `GPU_MEMORY_UTILIZATION` 값을 쓰려면 다음처럼 실행합니다.
+`start.sh`는 전체/사용 가능 메모리를 출력하고, `VLLM_BOOTSTRAP_MEMORY_RESERVE_GB`만큼 남긴 뒤 사용할 `--gpu-memory-utilization` 값을 추천하고 확인을 받습니다.
+
+또한 `REASONING_PARSER`는 `--reasoning-parser`로, `DEFAULT_CHAT_TEMPLATE_KWARGS`는 `--default-chat-template-kwargs`로 전달합니다.
+
+확인 없이 `.env`의 `GPU_MEMORY_UTILIZATION` 값을 쓰려면 다음처럼 실행합니다.
 
 ```bash
 ./scripts/start.sh --use-env-gpu-memory-utilization
