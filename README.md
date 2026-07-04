@@ -45,6 +45,8 @@ SERVED_MODEL_NAME=qwen3.5-9b
 HOST=127.0.0.1
 PORT=8000
 MAX_MODEL_LEN=32768
+GPU_MEMORY_UTILIZATION=0.50
+VLLM_BOOTSTRAP_MEMORY_RESERVE_GB=2
 VLLM_BIN=.venv-vllm-metal/bin/vllm
 HF_HOME=.cache/huggingface
 UV_CACHE_DIR=.cache/uv
@@ -53,6 +55,8 @@ PID_FILE=run/vllm.pid
 ```
 
 ## Scripts
+
+Scripts resolve the project root from their own path, so they can also be run through symlinks.
 
 Install vLLM-Metal into the project-local virtualenv:
 
@@ -64,6 +68,12 @@ Start vLLM:
 
 ```bash
 ./scripts/start.sh
+```
+
+`start.sh` prints total and available memory, recommends a `--gpu-memory-utilization` value after keeping `VLLM_BOOTSTRAP_MEMORY_RESERVE_GB` free, and asks before using it. To skip the prompt and use `GPU_MEMORY_UTILIZATION` from `.env`, run:
+
+```bash
+./scripts/start.sh --use-env-gpu-memory-utilization
 ```
 
 Check the PID and `/v1/models`:
@@ -83,6 +93,8 @@ Stop the PID-owned process:
 ```bash
 ./scripts/stop.sh
 ```
+
+`stop.sh` removes stale PID files and waits briefly for the process to exit after `TERM`.
 
 ## Manual API Call
 

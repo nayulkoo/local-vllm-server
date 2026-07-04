@@ -45,6 +45,8 @@ SERVED_MODEL_NAME=qwen3.5-9b
 HOST=127.0.0.1
 PORT=8000
 MAX_MODEL_LEN=32768
+GPU_MEMORY_UTILIZATION=0.50
+VLLM_BOOTSTRAP_MEMORY_RESERVE_GB=2
 VLLM_BIN=.venv-vllm-metal/bin/vllm
 HF_HOME=.cache/huggingface
 UV_CACHE_DIR=.cache/uv
@@ -53,6 +55,8 @@ PID_FILE=run/vllm.pid
 ```
 
 ## 스크립트
+
+스크립트는 자기 위치를 기준으로 프로젝트 루트를 찾기 때문에 symlink로 실행해도 동작합니다.
 
 프로젝트 내부 가상환경에 vLLM-Metal을 설치합니다.
 
@@ -64,6 +68,12 @@ vLLM을 시작합니다.
 
 ```bash
 ./scripts/start.sh
+```
+
+`start.sh`는 전체/사용 가능 메모리를 출력하고, `VLLM_BOOTSTRAP_MEMORY_RESERVE_GB`만큼 남긴 뒤 사용할 `--gpu-memory-utilization` 값을 추천하고 확인을 받습니다. 확인 없이 `.env`의 `GPU_MEMORY_UTILIZATION` 값을 쓰려면 다음처럼 실행합니다.
+
+```bash
+./scripts/start.sh --use-env-gpu-memory-utilization
 ```
 
 PID와 `/v1/models`를 확인합니다.
@@ -83,6 +93,8 @@ PID가 가리키는 프로세스를 종료합니다.
 ```bash
 ./scripts/stop.sh
 ```
+
+`stop.sh`는 오래된 PID 파일을 정리하고, `TERM` 이후 프로세스가 종료될 때까지 잠시 기다립니다.
 
 ## 직접 API 호출
 

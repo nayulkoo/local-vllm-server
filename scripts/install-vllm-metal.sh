@@ -1,7 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+SCRIPT_PATH="${BASH_SOURCE[0]}"
+while [[ -L "$SCRIPT_PATH" ]]; do
+  SCRIPT_DIR="$(cd -P "$(dirname "$SCRIPT_PATH")" && pwd)"
+  SCRIPT_PATH="$(readlink "$SCRIPT_PATH")"
+  [[ "$SCRIPT_PATH" != /* ]] && SCRIPT_PATH="$SCRIPT_DIR/$SCRIPT_PATH"
+done
+ROOT_DIR="$(cd -P "$(dirname "$SCRIPT_PATH")/.." && pwd)"
 cd "$ROOT_DIR"
 export UV_CACHE_DIR="$ROOT_DIR/.cache/uv"
 mkdir -p "$UV_CACHE_DIR"
